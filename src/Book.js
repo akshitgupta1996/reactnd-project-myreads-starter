@@ -27,7 +27,7 @@ class Book extends React.Component {
                     </div>
                 </div>
                 <div className="book-title">{title}</div>
-                <div className="book-authors">{authors}</div>
+                <div className="book-authors">{authors.map(t => <span key={t}>{t}</span>).reduce((prev, curr) => [prev, ', ', curr])}</div>
             </div>
         )
     }

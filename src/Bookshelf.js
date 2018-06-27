@@ -9,7 +9,6 @@ class Bookshelf extends React.Component {
     }
 
     render() {
-        console.log(this.props)
         const { title, list } = this.props;
         return (
             <div className="bookshelf">
@@ -18,7 +17,8 @@ class Bookshelf extends React.Component {
                       <ol className="books-grid">
                       {list && list.map((book) => (
                           <li key={book.id}>
-                              <Book 
+                              <Book
+                                id={book.id} 
                                 title= {book.title}
                                 authors={book.authors}
                                 imageURL={`url("${book.imageLinks.thumbnail}")`}
