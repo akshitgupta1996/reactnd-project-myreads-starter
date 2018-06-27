@@ -1,6 +1,5 @@
 import React from 'react'
 import './App.css'
-import * as api from './BooksAPI'
 
 class Book extends React.Component {
     state = {
@@ -12,12 +11,11 @@ class Book extends React.Component {
     }
 
     render() {
-        console.log(this.props)
-        const { title, authors, imageURL, width, height } = this.props;
+        const { title, authors, imageURL} = this.props;
         return (
             <div className="book">
                 <div className="book-top">
-                    <div className="book-cover" style={{ width: width, height: height, backgroundImage: imageURL }}></div>
+                    <div className="book-cover" style={{ width: 128, height: '100%', backgroundImage: imageURL }}></div>
                     <div className="book-shelf-changer">
                         <select>
                             <option value="move" disabled>Move to...</option>
