@@ -18,13 +18,10 @@ class SearchBooks extends React.Component {
         validated: false,
     }
 
-    componentWillMount() {
-    }
-
     updateQuery = (query) => {
         this.setState(() => ({
             query: query
-        }))
+        }), () => (this.filterBooks(query)))
     }
 
     filterBooks(query) {
@@ -51,7 +48,6 @@ class SearchBooks extends React.Component {
 
     render() {
         const { books, query, validated } = this.state
-        this.filterBooks(query)
         return (
             <div className="search-books">
                 <div className="search-books-bar">
@@ -70,10 +66,13 @@ class SearchBooks extends React.Component {
                         {validated && books && books.map((book) => (
                             <li key={book.id}>
                                 <Book
+                                    data={book}
                                     id={book.id}
                                     title={book.title}
                                     authors={book.authors}
                                     imageURL={`url("${this.getImageURL(book)}")`}
+                                    shelf={book.shelf}
+                                    onChangeShelf={this.props.onChangeShelf}
                                 />
                             </li>
                         )

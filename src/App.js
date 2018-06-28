@@ -15,29 +15,51 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    books: undefined,
-    currentlyReadingBooks: undefined,
-    wantToReadBooks: undefined,
-    readBooks: undefined,
-    noneBooks: undefined,
+    books: [],
+    currentlyReadingBooks: [],
+    wantToReadBooks: [],
+    readBooks: [],
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    this.buildState()
+  }
+
+  buildState = () => {
     BooksAPI.getAll().then(response => {
       if (response) {
-        this.setState({ 
+        this.setState({
           books: response,
-          currentlyReadingBooks: response.filter(book => book.shelf==='currentlyReading'),
-          wantToReadBooks: response.filter(book => book.shelf==='wantToRead'),
-          readBooks: response.filter(book => book.shelf==='read'),
-          noneBooks: response.filter(book => book.shelf==='none')
+          currentlyReadingBooks: response.filter(book => book.shelf === 'currentlyReading'),
+          wantToReadBooks: response.filter(book => book.shelf === 'wantToRead'),
+          readBooks: response.filter(book => book.shelf === 'read'),
         })
       }
     })
   }
 
+  updateShelves() {
+    const books = this.state.books
+    this.setState({
+      currentlyReadingBooks: books.filter(book => book.shelf === 'currentlyReading'),
+      wantToReadBooks: books.filter(book => book.shelf === 'wantToRead'),
+      readBooks: books.filter(book => book.shelf === 'read'),
+    })
+  }
+
   upadateBook = (book, shelf) => {
-    BooksAPI.update(book,shelf)
+    BooksAPI.update(book, shelf).then(this.buildState);
+
+    this.setState((currentState) => ({
+      books: currentState.books.filter((b) => {
+        if (b.id === book.id) {
+          b.shelf = shelf
+          return true
+        }
+        else
+          return true
+      })
+    }), () => (this.updateShelves()));
   }
 
   searchBook = (query) => {
@@ -45,22 +67,24 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    // console.log(this.state)
     return (
       <div className="app">
-      
-      <Route exact path='/' render={() => (
-        <ListBooks 
-          books={this.state.books}
-          currentlyReadingBooks={this.state.currentlyReadingBooks}
-          wantToReadBooks={this.state.wantToReadBooks}
-          readBooks={this.state.readBooks}
-          noneBooks={this.state.noneBooks}
-          />
-      )}/>
 
-      <Route path='/search' component={SearchBooks}/>
-      
+        <Route exact path='/' render={() => (
+          <ListBooks
+            books={this.state.books}
+            onChangeShelf={this.upadateBook}
+            currentlyReadingBooks={this.state.currentlyReadingBooks}
+            wantToReadBooks={this.state.wantToReadBooks}
+            readBooks={this.state.readBooks}
+          />
+        )} />
+
+        <Route path='/search' render={() => (
+          <SearchBooks
+            onChangeShelf={this.upadateBook}
+          />
+        )} />
       </div>
     )
   }
