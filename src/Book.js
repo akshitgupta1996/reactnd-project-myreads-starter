@@ -11,7 +11,7 @@ class Book extends React.Component {
     }
 
     render() {
-        const { title, authors, imageURL} = this.props;
+        const { title, authors, imageURL } = this.props;
         return (
             <div className="book">
                 <div className="book-top">
@@ -27,7 +27,8 @@ class Book extends React.Component {
                     </div>
                 </div>
                 <div className="book-title">{title}</div>
-                <div className="book-authors">{authors.map(t => <span key={t}>{t}</span>).reduce((prev, curr) => [prev, ', ', curr])}</div>
+                <div className="book-authors">{authors}</div> {//.map(t => <span key={t}>{t}</span>).reduce((prev, curr) => [prev, ', ', curr])
+                }
             </div>
         )
     }

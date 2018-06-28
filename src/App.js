@@ -20,7 +20,6 @@ class BooksApp extends React.Component {
     wantToReadBooks: undefined,
     readBooks: undefined,
     noneBooks: undefined,
-    showSearchPage: false
   }
 
   componentWillMount() {
@@ -35,6 +34,14 @@ class BooksApp extends React.Component {
         })
       }
     })
+  }
+
+  upadateBook = (book, shelf) => {
+    BooksAPI.update(book,shelf)
+  }
+
+  searchBook = (query) => {
+    BooksAPI.search(query)
   }
 
   render() {
