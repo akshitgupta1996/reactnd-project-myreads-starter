@@ -1,30 +1,22 @@
 import React from 'react'
 import './App.css'
-// import * as BooksAPI from './BooksAPI'
 
 class Book extends React.Component {
     state = {
-        title: undefined,
-        authors: undefined,
-        imageURL: undefined,
-        width: undefined,
-        height: undefined,
-        value: 'move',
+        shelf: 'none',
     }
 
     componentDidMount() {
-        // if (this.props.)
+        if (this.props.shelf) {
+            this.setState({
+                shelf: this.props.shelf,
+            })
+        }
     }
 
-    // changeShelf(book, shelf) {
-    //     console.log(book);
-    //     console.log(shelf);
-    //     this.setState({ value: shelf });
-    //     BooksAPI.update(book, shelf);
-    // }
-
     render() {
-        const { data, title, authors, imageURL, shelf } = this.props;
+        const { data, title, authors, imageURL } = this.props;
+        const { shelf } = this.state;
         return (
             <div className="book">
                 <div className="book-top">

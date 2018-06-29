@@ -16,9 +16,6 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books: [],
-    currentlyReadingBooks: [],
-    wantToReadBooks: [],
-    readBooks: [],
   }
 
   componentDidMount() {
@@ -30,22 +27,11 @@ class BooksApp extends React.Component {
       if (response) {
         this.setState({
           books: response,
-          currentlyReadingBooks: response.filter(book => book.shelf === 'currentlyReading'),
-          wantToReadBooks: response.filter(book => book.shelf === 'wantToRead'),
-          readBooks: response.filter(book => book.shelf === 'read'),
         })
       }
     })
   }
 
-  updateShelves() {
-    const books = this.state.books
-    this.setState({
-      currentlyReadingBooks: books.filter(book => book.shelf === 'currentlyReading'),
-      wantToReadBooks: books.filter(book => book.shelf === 'wantToRead'),
-      readBooks: books.filter(book => book.shelf === 'read'),
-    })
-  }
 
   upadateBook = (book, shelf) => {
     BooksAPI.update(book, shelf).then(this.buildState);
@@ -59,7 +45,7 @@ class BooksApp extends React.Component {
         else
           return true
       })
-    }), () => (this.updateShelves()));
+    }));
   }
 
   searchBook = (query) => {
@@ -67,6 +53,12 @@ class BooksApp extends React.Component {
   }
 
   render() {
+
+    const currentlyReadingBooks = this.state.books.filter(book => book.shelf === 'currentlyReading');
+    const wantToReadBooks = this.state.books.filter(book => book.shelf === 'wantToRead');
+    const readBooks = this.state.books.filter(book => book.shelf === 'read');
+
+
     return (
       <div className="app">
 
@@ -74,14 +66,15 @@ class BooksApp extends React.Component {
           <ListBooks
             books={this.state.books}
             onChangeShelf={this.upadateBook}
-            currentlyReadingBooks={this.state.currentlyReadingBooks}
-            wantToReadBooks={this.state.wantToReadBooks}
-            readBooks={this.state.readBooks}
+            currentlyReadingBooks={currentlyReadingBooks}
+            wantToReadBooks={wantToReadBooks}
+            readBooks={readBooks}
           />
         )} />
 
         <Route path='/search' render={() => (
           <SearchBooks
+            books={this.state.books}
             onChangeShelf={this.upadateBook}
           />
         )} />
