@@ -19,6 +19,12 @@ class SearchBooks extends React.Component {
     }
 
     updateQuery = (query) => {
+        if ((query).length === 0) {
+            this.setState({
+                query: '',
+                validated: false,
+            })
+        }
         this.setState(() => ({
             query: query
         }), () => (this.filterBooks(query)))
@@ -28,6 +34,17 @@ class SearchBooks extends React.Component {
         BooksAPI.search(this.state.query).then(response => {
             if (response) {
                 if (!response.error) {
+
+                    //assign shelfs here
+                    // let same = [];
+                    for (var myBook of this.props.myBooks) {
+                        for (var book of response) {
+                            if (book.id === myBook.id) {
+                                book.shelf = myBook.shelf;
+                            }
+                        }
+                    }
+
                     this.setState({
                         books: response,
                         validated: true,
