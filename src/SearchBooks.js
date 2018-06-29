@@ -36,7 +36,6 @@ class SearchBooks extends React.Component {
                 if (!response.error) {
 
                     //assign shelfs here
-                    // let same = [];
                     for (var myBook of this.props.myBooks) {
                         for (var book of response) {
                             if (book.id === myBook.id) {

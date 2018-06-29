@@ -4,10 +4,6 @@ import './App.css'
 import Book from './Book'
 
 class Bookshelf extends React.Component {
-    state = {
-        title: undefined,
-    }
-
     getImageURL = (book) => {
         if (book.imageLinks) {
             return book.imageLinks.thumbnail
